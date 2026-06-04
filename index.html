@@ -44,14 +44,14 @@
 
 /* LIGHT MODE OVERRIDES */
 body.light-mode {
-  --bg-primary: #f8fafc; /* Slate 50 */
+  --bg-primary: #f8fafc;
   --bg-secondary: #ffffff;
   --bg-card: #ffffff;
   --bg-glass: rgba(255,255,255,0.6);
   --border-glass: rgba(0,0,0,0.08);
   
-  --text-primary: #0f172a; /* Slate 900 */
-  --text-secondary: #475569; /* Slate 600 */
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
   --text-muted: #94a3b8;
   
   --gradient-card: linear-gradient(135deg, rgba(0,212,255,0.05) 0%, rgba(124,58,237,0.05) 100%);
@@ -144,7 +144,7 @@ body::before {
 }
 .btn-primary {
   background: var(--accent);
-  color: #080c14; /* Always dark text on bright accent */
+  color: #080c14;
   box-shadow: 0 8px 30px rgba(0,212,255,0.3);
 }
 .btn-primary:hover {
@@ -204,7 +204,6 @@ body::before {
   border-bottom: 1px solid var(--border-glass);
   padding: 0.9rem 0;
 }
-/* Light mode navbar override */
 body.light-mode #navbar.scrolled {
   background: rgba(255,255,255,0.85);
   border-bottom: 1px solid rgba(0,0,0,0.05);
@@ -244,6 +243,75 @@ body.light-mode #navbar.scrolled {
 .nav-cta { display: flex; align-items: center; gap: 1rem; }
 .nav-cta .btn { padding: 10px 22px; font-size: 0.85rem; }
 
+/* CONTROLS WRAPPER (Theme & Lang) */
+.controls-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* LANGUAGE SWITCHER */
+.lang-switcher {
+  position: relative;
+}
+.lang-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  color: var(--text-primary);
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 700;
+  transition: var(--transition);
+  font-family: var(--font-mono);
+}
+.lang-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.lang-dropdown {
+  position: absolute;
+  top: 120%;
+  right: 0;
+  background: var(--bg-card);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+  min-width: 100px;
+  z-index: 1001;
+}
+.lang-dropdown.show { display: flex; animation: fadeIn 0.2s ease; }
+.lang-option {
+  padding: 10px 16px;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: 0.2s;
+  font-family: var(--font-body);
+}
+.lang-option:hover {
+  background: rgba(0,212,255,0.1);
+  color: var(--accent);
+}
+.lang-option.active {
+  color: var(--accent);
+  background: rgba(0,212,255,0.05);
+  font-weight: 600;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 /* THEME TOGGLE (Grid Icon) */
 .theme-toggle {
   background: #080c14;
@@ -263,7 +331,6 @@ body.light-mode #navbar.scrolled {
   border-color: var(--accent);
   transform: scale(1.05);
 }
-/* Grid Icon Implementation */
 .grid-icon {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -276,7 +343,6 @@ body.light-mode #navbar.scrolled {
   background-color: rgba(255,255,255,0.5);
   border-radius: 1px;
 }
-/* Light mode toggle state */
 body.light-mode .theme-toggle {
   background: #f8fafc;
   border-color: rgba(0,0,0,0.1);
@@ -375,7 +441,6 @@ body.light-mode .nav-mobile { background: rgba(255,255,255,0.97); }
   bottom: -50px; left: -100px;
   animation: floatOrb 10s ease-in-out infinite reverse;
 }
-/* Light mode orbs */
 body.light-mode .orb-1 { background: rgba(0,212,255,0.15); }
 body.light-mode .orb-2 { background: rgba(124,58,237,0.15); }
 
@@ -1071,9 +1136,6 @@ footer {
   .form-row { grid-template-columns: 1fr; }
   .stats-grid { grid-template-columns: repeat(2, 1fr); }
   .footer-inner { flex-direction: column; text-align: center; }
-  
-  /* Show theme toggle in mobile menu if needed, or keep separate. 
-     For now, we'll hide desktop controls completely. */
 }
 @media (max-width: 480px) {
   .container { padding: 0 1.25rem; }
@@ -1092,25 +1154,37 @@ footer {
   <div class="container nav-inner">
     <a href="#home" class="nav-logo">SENA MIKE<span>.</span></a>
     <ul class="nav-links">
-      <li><a href="#home" class="active">Home</a></li>
-      <li><a href="#about">About</a></li>
-      <li><a href="#skills">Skills</a></li>
-      <li><a href="#projects">Projects</a></li>
-      <li><a href="#services">Services</a></li>
-      <li><a href="#contact">Contact</a></li>
+      <li><a href="#home" class="active" data-i18n="nav_home">Home</a></li>
+      <li><a href="#about" data-i18n="nav_about">About</a></li>
+      <li><a href="#skills" data-i18n="nav_skills">Skills</a></li>
+      <li><a href="#projects" data-i18n="nav_projects">Projects</a></li>
+      <li><a href="#services" data-i18n="nav_services">Services</a></li>
+      <li><a href="#contact" data-i18n="nav_contact">Contact</a></li>
     </ul>
     
     <!-- Controls -->
     <div class="nav-cta">
-      <!-- GRID THEME TOGGLE -->
-      <button class="theme-toggle" id="themeToggle" aria-label="Toggle Light/Dark Mode">
-        <div class="grid-icon">
-          <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
-          <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
-          <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
+      <div class="controls-wrapper">
+        <!-- LANGUAGE SWITCHER -->
+        <div class="lang-switcher">
+          <button class="lang-btn" id="langBtn">EN</button>
+          <div class="lang-dropdown" id="langDropdown">
+            <div class="lang-option active" onclick="setLanguage('en')">English</div>
+            <div class="lang-option" onclick="setLanguage('fr')">Français</div>
+            <div class="lang-option" onclick="setLanguage('rw')">Ikinyarwanda</div>
+          </div>
         </div>
-      </button>
-      <a href="#contact" class="btn btn-primary">Let's Talk</a>
+
+        <!-- THEME TOGGLE -->
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle Light/Dark Mode">
+          <div class="grid-icon">
+            <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
+            <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
+            <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
+          </div>
+        </button>
+      </div>
+      <a href="#contact" class="btn btn-primary" data-i18n="btn_talk">Let's Talk</a>
     </div>
 
     <div class="hamburger" id="hamburger">
@@ -1121,12 +1195,12 @@ footer {
 
 <nav class="nav-mobile" id="navMobile">
   <div class="nav-mobile-close" id="navClose">✕</div>
-  <a href="#home" class="mobile-link">Home</a>
-  <a href="#about" class="mobile-link">About</a>
-  <a href="#skills" class="mobile-link">Skills</a>
-  <a href="#projects" class="mobile-link">Projects</a>
-  <a href="#services" class="mobile-link">Services</a>
-  <a href="#contact" class="mobile-link">Contact</a>
+  <a href="#home" class="mobile-link" data-i18n="nav_home">Home</a>
+  <a href="#about" class="mobile-link" data-i18n="nav_about">About</a>
+  <a href="#skills" class="mobile-link" data-i18n="nav_skills">Skills</a>
+  <a href="#projects" class="mobile-link" data-i18n="nav_projects">Projects</a>
+  <a href="#services" class="mobile-link" data-i18n="nav_services">Services</a>
+  <a href="#contact" class="mobile-link" data-i18n="nav_contact">Contact</a>
 </nav>
 
 <!-- ============================================================
@@ -1146,7 +1220,7 @@ footer {
           </div>
           <div class="photo-card-badge">
             <div class="status-dot"></div>
-            Available for hire
+            <span data-i18n="hero_status">Available for hire</span>
           </div>
           <div class="photo-decor decor-1">
             &lt;code /&gt;
@@ -1161,42 +1235,42 @@ footer {
       <div class="hero-content reveal-right">
         <div class="hero-greeting">
           <div class="greeting-line"></div>
-          <span class="greeting-text">Hello, I'm</span>
+          <span class="greeting-text" data-i18n="hero_greeting">Hello, I'm</span>
         </div>
         <h1 class="hero-name">
           SENA MIKE<br>
-          <span class="gradient-text">Developer</span>
+          <span class="gradient-text" data-i18n="hero_role">Developer</span>
         </h1>
         <div class="hero-profession">
           <span id="typed"></span>
           <span class="typed-cursor"></span>
         </div>
-        <p class="hero-intro">
+        <p class="hero-intro" data-i18n="hero_intro">
           I craft exceptional digital experiences through clean code and thoughtful design.
           Passionate about building practical web applications that solve real problems in Rwanda and beyond.
         </p>
         <div class="hero-buttons">
           <a href="#contact" class="btn btn-primary">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-            Hire Me
+            <span data-i18n="btn_hire">Hire Me</span>
           </a>
           <a href="#" class="btn btn-outline">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            Download CV
+            <span data-i18n="btn_cv">Download CV</span>
           </a>
         </div>
         <div class="hero-stats">
           <div>
             <span class="hero-stat-num">2<span>+</span></span>
-            <span class="hero-stat-label">Projects Done</span>
+            <span class="hero-stat-label" data-i18n="stat_projects">Projects Done</span>
           </div>
           <div>
             <span class="hero-stat-num">1<span>+</span></span>
-            <span class="hero-stat-label">Year Exp.</span>
+            <span class="hero-stat-label" data-i18n="stat_exp">Year Exp.</span>
           </div>
           <div>
-            <span class="hero-stat-num">Available</span>
-            <span class="hero-stat-label">For Freelance</span>
+            <span class="hero-stat-num" data-i18n="stat_availability">Available</span>
+            <span class="hero-stat-label" data-i18n="stat_freelance">For Freelance</span>
           </div>
         </div>
       </div>
@@ -1211,69 +1285,69 @@ footer {
   <div class="container">
     <div class="about-grid">
       <div class="about-text reveal-left">
-        <span class="section-tag">Get to know me</span>
-        <h2 class="section-title">About <span class="gradient-text">Me</span></h2>
-        <p>I'm a passionate software development student based in Kigali, Rwanda. Currently studying at SOS Technical High School, I love building functional web applications that solve local problems.</p>
-        <p>When I'm not coding, I enjoy contributing to community projects, learning new technologies, and exploring how digital solutions can improve lives in Rwanda.</p>
+        <span class="section-tag" data-i18n="about_tag">Get to know me</span>
+        <h2 class="section-title" data-i18n="about_title">About <span class="gradient-text">Me</span></h2>
+        <p data-i18n="about_p1">I'm a passionate software development student based in Kigali, Rwanda. Currently studying at SOS Technical High School, I love building functional web applications that solve local problems.</p>
+        <p data-i18n="about_p2">When I'm not coding, I enjoy contributing to community projects, learning new technologies, and exploring how digital solutions can improve lives in Rwanda.</p>
         <div class="info-grid">
           <div class="info-item">
-            <div class="info-label">Name</div>
+            <div class="info-label" data-i18n="info_name_label">Name</div>
             <div class="info-value">SENA MIKE</div>
           </div>
           <div class="info-item">
-            <div class="info-label">Location</div>
-            <div class="info-value">KIGALI, RWANDA</div>
+            <div class="info-label" data-i18n="info_location_label">Location</div>
+            <div class="info-value" data-i18n="info_location">KIGALI, RWANDA</div>
           </div>
           <div class="info-item">
-            <div class="info-label">Email</div>
+            <div class="info-label" data-i18n="info_email_label">Email</div>
             <div class="info-value"><a href="mailto:senamike@gmail.com">senamike@gmail.com</a></div>
           </div>
           <div class="info-item">
-            <div class="info-label">Phone</div>
+            <div class="info-label" data-i18n="info_phone_label">Phone</div>
             <div class="info-value"><a href="tel:+250792800586">0792 800 586</a></div>
           </div>
           <div class="info-item">
-            <div class="info-label">Freelance</div>
-            <div class="info-value" style="color: #22c55e;">Available ✓</div>
+            <div class="info-label" data-i18n="info_freelance_label">Freelance</div>
+            <div class="info-value" style="color: #22c55e;" data-i18n="info_freelance">Available ✓</div>
           </div>
           <div class="info-item">
-            <div class="info-label">Languages</div>
-            <div class="info-value">English, Kinyarwanda</div>
+            <div class="info-label" data-i18n="info_langs_label">Languages</div>
+            <div class="info-value" data-i18n="info_langs">English, Kinyarwanda</div>
           </div>
         </div>
-        <a href="#contact" class="btn btn-primary">Download CV</a>
+        <a href="#contact" class="btn btn-primary" data-i18n="btn_cv_short">Download CV</a>
       </div>
       <div class="about-cards reveal-right">
         <div class="about-card">
           <div class="about-card-icon edu">🎓</div>
           <div>
-            <h4>Education</h4>
-            <p>Software Development — SOS Technical High School</p>
-            <small>Currently finishing</small>
+            <h4 data-i18n="card_edu_title">Education</h4>
+            <p data-i18n="card_edu_desc">Software Development — SOS Technical High School</p>
+            <small data-i18n="card_edu_sub">Currently finishing</small>
           </div>
         </div>
         <div class="about-card">
           <div class="about-card-icon exp">💼</div>
           <div>
-            <h4>Experience</h4>
-            <p>Freelance Developer & Student Projects</p>
-            <small>Building real-world applications for Rwanda</small>
+            <h4 data-i18n="card_exp_title">Experience</h4>
+            <p data-i18n="card_exp_desc">Freelance Developer & Student Projects</p>
+            <small data-i18n="card_exp_sub">Building real-world applications for Rwanda</small>
           </div>
         </div>
         <div class="about-card">
           <div class="about-card-icon goal">🎯</div>
           <div>
-            <h4>Career Objective</h4>
-            <p>To become a professional full-stack developer creating impactful digital solutions for Rwanda and Africa.</p>
-            <small>Open to freelance & internship opportunities</small>
+            <h4 data-i18n="card_goal_title">Career Objective</h4>
+            <p data-i18n="card_goal_desc">To become a professional full-stack developer creating impactful digital solutions for Rwanda and Africa.</p>
+            <small data-i18n="card_goal_sub">Open to freelance & internship opportunities</small>
           </div>
         </div>
         <div class="about-card">
           <div class="about-card-icon exp">🏆</div>
           <div>
-            <h4>Projects</h4>
-            <p>Tembera Rwanda Rent Car • Connect Youth Rwanda</p>
-            <small>Building useful tools for the Rwandan community</small>
+            <h4 data-i18n="card_proj_title">Projects</h4>
+            <p data-i18n="card_proj_desc">Tembera Rwanda Rent Car • Connect Youth Rwanda</p>
+            <small data-i18n="card_proj_sub">Building useful tools for the Rwandan community</small>
           </div>
         </div>
       </div>
@@ -1287,14 +1361,14 @@ footer {
 <section id="skills" class="section">
   <div class="container">
     <div style="text-align:center; margin-bottom: 3.5rem;" class="reveal">
-      <span class="section-tag">What I know</span>
-      <h2 class="section-title">Technical <span class="gradient-text">Skills</span></h2>
+      <span class="section-tag" data-i18n="skills_tag">What I know</span>
+      <h2 class="section-title" data-i18n="skills_title">Technical <span class="gradient-text">Skills</span></h2>
     </div>
     <div class="skills-grid">
       <div class="skill-category reveal">
         <div class="skill-cat-header">
           <div class="skill-cat-icon">⚡</div>
-          <span class="skill-cat-title">Frontend</span>
+          <span class="skill-cat-title" data-i18n="skill_front">Frontend</span>
         </div>
         <div class="skill-item">
           <div class="skill-meta"><span class="skill-name">HTML / CSS / JavaScript</span><span class="skill-pct">90%</span></div>
@@ -1312,7 +1386,7 @@ footer {
       <div class="skill-category reveal">
         <div class="skill-cat-header">
           <div class="skill-cat-icon">🛠</div>
-          <span class="skill-cat-title">Backend</span>
+          <span class="skill-cat-title" data-i18n="skill_back">Backend</span>
         </div>
         <div class="skill-item">
           <div class="skill-meta"><span class="skill-name">Node.js / Express</span><span class="skill-pct">70%</span></div>
@@ -1330,7 +1404,7 @@ footer {
       <div class="skill-category reveal">
         <div class="skill-cat-header">
           <div class="skill-cat-icon">☁️</div>
-          <span class="skill-cat-title">Tools & Others</span>
+          <span class="skill-cat-title" data-i18n="skill_tools">Tools & Others</span>
         </div>
         <div class="skill-item">
           <div class="skill-meta"><span class="skill-name">Git & GitHub</span><span class="skill-pct">80%</span></div>
@@ -1346,18 +1420,6 @@ footer {
         </div>
       </div>
     </div>
-    <div class="tech-badges reveal">
-      <span class="tech-badge">JavaScript</span>
-      <span class="tech-badge">React</span>
-      <span class="tech-badge">Next.js</span>
-      <span class="tech-badge">Tailwind</span>
-      <span class="tech-badge">Node.js</span>
-      <span class="tech-badge">Python</span>
-      <span class="tech-badge">MongoDB</span>
-      <span class="tech-badge">Git</span>
-      <span class="tech-badge">Figma</span>
-      <span class="tech-badge">HTML/CSS</span>
-    </div>
   </div>
 </section>
 
@@ -1367,8 +1429,8 @@ footer {
 <section id="projects" class="section">
   <div class="container">
     <div style="text-align:center; margin-bottom: 2.5rem;" class="reveal">
-      <span class="section-tag">My work</span>
-      <h2 class="section-title">Featured <span class="gradient-text">Projects</span></h2>
+      <span class="section-tag" data-i18n="projects_tag">My work</span>
+      <h2 class="section-title" data-i18n="projects_title">Featured <span class="gradient-text">Projects</span></h2>
     </div>
     <div class="projects-grid">
       <!-- Project 1 -->
@@ -1376,22 +1438,22 @@ footer {
         <div class="project-img-wrap">
           <img src="https://picsum.photos/seed/tembera/600/400" alt="Tembera Rwanda" class="project-img">
           <div class="project-overlay">
-            <a href="#" class="overlay-btn">Live Demo</a>
+            <a href="#" class="overlay-btn" data-i18n="btn_demo">Live Demo</a>
             <a href="#" class="overlay-btn outline">GitHub</a>
           </div>
         </div>
         <div class="project-body">
-          <div class="project-cat">Web App</div>
+          <div class="project-cat" data-i18n="proj_cat_web">Web App</div>
           <h3 class="project-title">Tembera Rwanda</h3>
-          <p class="project-desc">A car rental platform designed for tourists visiting Rwanda, featuring easy booking and local support.</p>
+          <p class="project-desc" data-i18n="proj_1_desc">A car rental platform designed for tourists visiting Rwanda, featuring easy booking and local support.</p>
           <div class="project-tech">
             <span class="tech-tag">React</span>
             <span class="tech-tag">Node.js</span>
             <span class="tech-tag">MongoDB</span>
           </div>
           <div class="project-links">
-            <a href="#" class="link-demo">Live Demo</a>
-            <a href="#" class="link-src">Source Code</a>
+            <a href="#" class="link-demo" data-i18n="btn_demo">Live Demo</a>
+            <a href="#" class="link-src" data-i18n="btn_src">Source Code</a>
           </div>
         </div>
       </div>
@@ -1400,22 +1462,22 @@ footer {
         <div class="project-img-wrap">
           <img src="https://picsum.photos/seed/youth/600/400" alt="Connect Youth" class="project-img">
           <div class="project-overlay">
-            <a href="#" class="overlay-btn">Live Demo</a>
+            <a href="#" class="overlay-btn" data-i18n="btn_demo">Live Demo</a>
             <a href="#" class="overlay-btn outline">GitHub</a>
           </div>
         </div>
         <div class="project-body">
-          <div class="project-cat">Web App</div>
+          <div class="project-cat" data-i18n="proj_cat_web">Web App</div>
           <h3 class="project-title">Connect Youth Rwanda</h3>
-          <p class="project-desc">A youth empowerment platform for connecting young Rwandans with opportunities, events, mentorship, and community initiatives.</p>
+          <p class="project-desc" data-i18n="proj_2_desc">A youth empowerment platform for connecting young Rwandans with opportunities, events, mentorship, and community initiatives.</p>
           <div class="project-tech">
             <span class="tech-tag">Next.js</span>
             <span class="tech-tag">Tailwind</span>
             <span class="tech-tag">Firebase</span>
           </div>
           <div class="project-links">
-            <a href="#" class="link-demo">Live Demo</a>
-            <a href="#" class="link-src">Source Code</a>
+            <a href="#" class="link-demo" data-i18n="btn_demo">Live Demo</a>
+            <a href="#" class="link-src" data-i18n="btn_src">Source Code</a>
           </div>
         </div>
       </div>
@@ -1429,40 +1491,40 @@ footer {
 <section id="services" class="section">
   <div class="container">
     <div style="text-align:center; margin-bottom: 3.5rem;" class="reveal">
-      <span class="section-tag">What I offer</span>
-      <h2 class="section-title">My <span class="gradient-text">Services</span></h2>
+      <span class="section-tag" data-i18n="services_tag">What I offer</span>
+      <h2 class="section-title" data-i18n="services_title">My <span class="gradient-text">Services</span></h2>
     </div>
     <div class="services-grid">
       <div class="service-card reveal">
         <div class="service-icon">🌐</div>
-        <h3 class="service-title">Web Development</h3>
-        <p class="service-desc">Building modern, responsive, and user-friendly websites and web applications.</p>
+        <h3 class="service-title" data-i18n="serv_web_title">Web Development</h3>
+        <p class="service-desc" data-i18n="serv_web_desc">Building modern, responsive, and user-friendly websites and web applications.</p>
         <ul class="service-features">
-          <li>Landing Pages & Portfolios</li>
-          <li>Full-Stack Web Apps</li>
-          <li>Custom Business Solutions</li>
-          <li>Performance Optimization</li>
+          <li data-i18n="serv_web_feat1">Landing Pages & Portfolios</li>
+          <li data-i18n="serv_web_feat2">Full-Stack Web Apps</li>
+          <li data-i18n="serv_web_feat3">Custom Business Solutions</li>
+          <li data-i18n="serv_web_feat4">Performance Optimization</li>
         </ul>
       </div>
       <div class="service-card reveal">
         <div class="service-icon">🎨</div>
-        <h3 class="service-title">UI/UX Design</h3>
-        <p class="service-desc">Creating clean, modern, and intuitive user interfaces using Figma.</p>
+        <h3 class="service-title" data-i18n="serv_ui_title">UI/UX Design</h3>
+        <p class="service-desc" data-i18n="serv_ui_desc">Creating clean, modern, and intuitive user interfaces using Figma.</p>
         <ul class="service-features">
-          <li>Wireframing & Prototyping</li>
-          <li>Modern UI Design</li>
-          <li>Responsive Design</li>
-          <li>User Testing</li>
+          <li data-i18n="serv_ui_feat1">Wireframing & Prototyping</li>
+          <li data-i18n="serv_ui_feat2">Modern UI Design</li>
+          <li data-i18n="serv_ui_feat3">Responsive Design</li>
+          <li data-i18n="serv_ui_feat4">User Testing</li>
         </ul>
       </div>
       <div class="service-card reveal">
         <div class="service-icon">📱</div>
-        <h3 class="service-title">Mobile-Friendly Apps</h3>
-        <p class="service-desc">Responsive web applications that work perfectly on mobile devices.</p>
+        <h3 class="service-title" data-i18n="serv_mob_title">Mobile-Friendly Apps</h3>
+        <p class="service-desc" data-i18n="serv_mob_desc">Responsive web applications that work perfectly on mobile devices.</p>
         <ul class="service-features">
-          <li>Progressive Web Apps (PWA)</li>
-          <li>Mobile-First Design</li>
-          <li>Cross-device Compatibility</li>
+          <li data-i18n="serv_mob_feat1">Progressive Web Apps (PWA)</li>
+          <li data-i18n="serv_mob_feat2">Mobile-First Design</li>
+          <li data-i18n="serv_mob_feat3">Cross-device Compatibility</li>
         </ul>
       </div>
     </div>
@@ -1475,33 +1537,33 @@ footer {
 <section id="contact" class="section">
   <div class="container">
     <div style="text-align:center; margin-bottom: 3.5rem;" class="reveal">
-      <span class="section-tag">Reach out</span>
-      <h2 class="section-title">Get In <span class="gradient-text">Touch</span></h2>
+      <span class="section-tag" data-i18n="contact_tag">Reach out</span>
+      <h2 class="section-title" data-i18n="contact_title">Get In <span class="gradient-text">Touch</span></h2>
     </div>
     <div class="contact-grid">
       <div class="reveal-left">
-        <h3>Let's build something<br>great together.</h3>
-        <p>Whether you have a project in mind, need a website, or just want to connect — I'm always happy to chat.</p>
+        <h3 data-i18n="contact_sub">Let's build something<br>great together.</h3>
+        <p data-i18n="contact_p">Whether you have a project in mind, need a website, or just want to connect — I'm always happy to chat.</p>
         <div class="contact-items">
           <div class="contact-item">
             <div class="contact-item-icon">📧</div>
             <div>
-              <div class="contact-item-label">Email</div>
+              <div class="contact-item-label" data-i18n="info_email_label">Email</div>
               <div class="contact-item-value"><a href="mailto:senamike@gmail.com">senamike@gmail.com</a></div>
             </div>
           </div>
           <div class="contact-item">
             <div class="contact-item-icon">📱</div>
             <div>
-              <div class="contact-item-label">Phone</div>
+              <div class="contact-item-label" data-i18n="info_phone_label">Phone</div>
               <div class="contact-item-value"><a href="tel:+250792800586">+250 792 800 586</a></div>
             </div>
           </div>
           <div class="contact-item">
             <div class="contact-item-icon">📍</div>
             <div>
-              <div class="contact-item-label">Location</div>
-              <div class="contact-item-value">Kigali, Rwanda</div>
+              <div class="contact-item-label" data-i18n="info_location_label">Location</div>
+              <div class="contact-item-value" data-i18n="info_location">Kigali, Rwanda</div>
             </div>
           </div>
         </div>
@@ -1515,38 +1577,38 @@ footer {
         <form id="contactForm">
           <div class="form-row">
             <div class="form-group">
-              <label for="name">Your Name</label>
-              <input type="text" id="name" placeholder="username" required>
+              <label for="name" data-i18n="form_name">Your Name</label>
+              <input type="text" id="name" required data-i18n-placeholder="form_ph_name">
             </div>
             <div class="form-group">
-              <label for="email">Email Address</label>
-              <input type="email" id="email" placeholder="name@example.com" required>
+              <label for="email" data-i18n="form_email">Email Address</label>
+              <input type="email" id="email" required data-i18n-placeholder="form_ph_email">
             </div>
           </div>
           <div class="form-group">
-            <label for="service">Service Needed</label>
+            <label for="service" data-i18n="form_service">Service Needed</label>
             <select id="service">
-              <option value="">Select a service...</option>
-              <option>Web Development</option>
-              <option>UI/UX Design</option>
-              <option>Full Website</option>
-              <option>Other</option>
+              <option value="" data-i18n="form_select_default">Select a service...</option>
+              <option data-i18n="form_opt_web">Web Development</option>
+              <option data-i18n="form_opt_ui">UI/UX Design</option>
+              <option data-i18n="form_opt_full">Full Website</option>
+              <option data-i18n="form_opt_other">Other</option>
             </select>
           </div>
           <div class="form-group">
-            <label for="subject">Subject</label>
-            <input type="text" id="subject" placeholder="Project Inquiry">
+            <label for="subject" data-i18n="form_subject">Subject</label>
+            <input type="text" id="subject" data-i18n-placeholder="form_ph_subject">
           </div>
           <div class="form-group">
-            <label for="message">Message</label>
-            <textarea id="message" placeholder="Tell me about your project..." required></textarea>
+            <label for="message" data-i18n="form_message">Message</label>
+            <textarea id="message" required data-i18n-placeholder="form_ph_message"></textarea>
           </div>
           <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center;">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-            Send Message
+            <span data-i18n="form_btn">Send Message</span>
           </button>
         </form>
-        <div class="form-success" id="formSuccess">
+        <div class="form-success" id="formSuccess" data-i18n="form_success">
           ✅ Message sent! I'll get back to you soon.
         </div>
       </div>
@@ -1561,7 +1623,7 @@ footer {
   <div class="container">
     <div class="footer-inner">
       <a href="#home" class="footer-logo">SENA MIKE<span>.</span></a>
-      <p class="footer-copy">© 2026 Sena Mike. Built with ❤️ in Kigali, Rwanda</p>
+      <p class="footer-copy" data-i18n="footer_copy">© 2026 Sena Mike. Built with ❤️ in Kigali, Rwanda</p>
       <div class="footer-socials">
         <a href="https://instagram.com/senamike388" target="_blank" class="social-link">📷</a>
       </div>
@@ -1578,6 +1640,183 @@ footer {
      JAVASCRIPT
      ============================================================ -->
 <script>
+/* ============================================================
+   TRANSLATION DATA
+   ============================================================ */
+const translations = {
+  en: {
+    nav_home: "Home", nav_about: "About", nav_skills: "Skills", nav_projects: "Projects", nav_services: "Services", nav_contact: "Contact",
+    btn_talk: "Let's Talk",
+    hero_status: "Available for hire", hero_greeting: "Hello, I'm", hero_role: "Developer",
+    hero_intro: "I craft exceptional digital experiences through clean code and thoughtful design. Passionate about building practical web applications that solve real problems in Rwanda and beyond.",
+    btn_hire: "Hire Me", btn_cv: "Download CV", btn_cv_short: "Download CV",
+    stat_projects: "Projects Done", stat_exp: "Year Exp.", stat_availability: "Available", stat_freelance: "For Freelance",
+    about_tag: "Get to know me", about_title: "About Me",
+    about_p1: "I'm a passionate software development student based in Kigali, Rwanda. Currently studying at SOS Technical High School, I love building functional web applications that solve local problems.",
+    about_p2: "When I'm not coding, I enjoy contributing to community projects, learning new technologies, and exploring how digital solutions can improve lives in Rwanda.",
+    info_name_label: "Name", info_location_label: "Location", info_location: "KIGALI, RWANDA",
+    info_email_label: "Email", info_phone_label: "Phone", info_freelance_label: "Freelance", info_freelance: "Available ✓",
+    info_langs_label: "Languages", info_langs: "English, Kinyarwanda",
+    card_edu_title: "Education", card_edu_desc: "Software Development — SOS Technical High School", card_edu_sub: "Currently finishing",
+    card_exp_title: "Experience", card_exp_desc: "Freelance Developer & Student Projects", card_exp_sub: "Building real-world applications for Rwanda",
+    card_goal_title: "Career Objective", card_goal_desc: "To become a professional full-stack developer creating impactful digital solutions for Rwanda and Africa.", card_goal_sub: "Open to freelance & internship opportunities",
+    card_proj_title: "Projects", card_proj_desc: "Tembera Rwanda Rent Car • Connect Youth Rwanda", card_proj_sub: "Building useful tools for the Rwandan community",
+    skills_tag: "What I know", skills_title: "Technical Skills", skill_front: "Frontend", skill_back: "Backend", skill_tools: "Tools & Others",
+    projects_tag: "My work", projects_title: "Featured Projects", btn_demo: "Live Demo", btn_src: "Source Code", proj_cat_web: "Web App",
+    proj_1_desc: "A car rental platform designed for tourists visiting Rwanda, featuring easy booking and local support.",
+    proj_2_desc: "A youth empowerment platform for connecting young Rwandans with opportunities, events, mentorship, and community initiatives.",
+    services_tag: "What I offer", services_title: "My Services",
+    serv_web_title: "Web Development", serv_web_desc: "Building modern, responsive, and user-friendly websites and web applications.",
+    serv_web_feat1: "Landing Pages & Portfolios", serv_web_feat2: "Full-Stack Web Apps", serv_web_feat3: "Custom Business Solutions", serv_web_feat4: "Performance Optimization",
+    serv_ui_title: "UI/UX Design", serv_ui_desc: "Creating clean, modern, and intuitive user interfaces using Figma.",
+    serv_ui_feat1: "Wireframing & Prototyping", serv_ui_feat2: "Modern UI Design", serv_ui_feat3: "Responsive Design", serv_ui_feat4: "User Testing",
+    serv_mob_title: "Mobile-Friendly Apps", serv_mob_desc: "Responsive web applications that work perfectly on mobile devices.",
+    serv_mob_feat1: "Progressive Web Apps (PWA)", serv_mob_feat2: "Mobile-First Design", serv_mob_feat3: "Cross-device Compatibility",
+    contact_tag: "Reach out", contact_title: "Get In Touch", contact_sub: "Let's build something\ngreat together.",
+    contact_p: "Whether you have a project in mind, need a website, or just want to connect — I'm always happy to chat.",
+    form_name: "Your Name", form_email: "Email Address", form_service: "Service Needed", form_subject: "Subject", form_message: "Message",
+    form_ph_name: "username", form_ph_email: "name@example.com", form_ph_subject: "Project Inquiry", form_ph_message: "Tell me about your project...",
+    form_select_default: "Select a service...", form_opt_web: "Web Development", form_opt_ui: "UI/UX Design", form_opt_full: "Full Website", form_opt_other: "Other",
+    form_btn: "Send Message", form_success: "✅ Message sent! I'll get back to you soon.",
+    footer_copy: "© 2026 Sena Mike. Built with ❤️ in Kigali, Rwanda",
+    typed: ["Full-Stack Developer", "UI/UX Designer", "Software Student", "Web Developer"]
+  },
+  fr: {
+    nav_home: "Accueil", nav_about: "À propos", nav_skills: "Compétences", nav_projects: "Projets", nav_services: "Services", nav_contact: "Contact",
+    btn_talk: "Parlons",
+    hero_status: "Disponible à l'embauche", hero_greeting: "Bonjour, je suis", hero_role: "Développeur",
+    hero_intro: "Je crée des expériences numériques exceptionnelles grâce à un code propre et une conception réfléchie. Passionné par la création d'applications web pratiques qui résolvent de vrais problèmes au Rwanda et ailleurs.",
+    btn_hire: "Engagez-moi", btn_cv: "Télécharger CV", btn_cv_short: "Télécharger CV",
+    stat_projects: "Projets Réalisés", stat_exp: "An. Exp.", stat_availability: "Disponible", stat_freelance: "Freelance",
+    about_tag: "À propos de moi", about_title: "À Propos de <span class='gradient-text'>Moi</span>",
+    about_p1: "Je suis un étudiant passionné en développement logiciel basé à Kigali, au Rwanda. Actuellement étudiant à l'école technique SOS, j'aime créer des applications web fonctionnelles qui résolvent des problèmes locaux.",
+    about_p2: "Quand je ne code pas, j'aime contribuer à des projets communautaires, apprendre de nouvelles technologies et explorer comment les solutions numériques peuvent améliorer la vie au Rwanda.",
+    info_name_label: "Nom", info_location_label: "Lieu", info_location: "KIGALI, RWANDA",
+    info_email_label: "Email", info_phone_label: "Téléphone", info_freelance_label: "Freelance", info_freelance: "Disponible ✓",
+    info_langs_label: "Langues", info_langs: "Anglais, Kinyarwanda",
+    card_edu_title: "Éducation", card_edu_desc: "Développement Logiciel — Lycée Technique SOS", card_edu_sub: "Bientôt diplômé",
+    card_exp_title: "Expérience", card_exp_desc: "Développeur Freelance & Projets Étudiants", card_exp_sub: "Création d'applications pour le Rwanda",
+    card_goal_title: "Objectif de Carrière", card_goal_desc: "Devenir un développeur full-stack professionnel créant des solutions numériques impactantes pour le Rwanda et l'Afrique.", card_goal_sub: "Ouvert au freelance & stages",
+    card_proj_title: "Projets", card_proj_desc: "Tembera Rwanda Location Voiture • Connect Youth Rwanda", card_proj_sub: "Outils utiles pour la communauté rwandaise",
+    skills_tag: "Ce que je sais", skills_title: "Compétences <span class='gradient-text'>Techniques</span>", skill_front: "Frontend", skill_back: "Backend", skill_tools: "Outils & Autres",
+    projects_tag: "Mon travail", projects_title: "Projets <span class='gradient-text'>Récents</span>", btn_demo: "Démo", btn_src: "Code Source", proj_cat_web: "App Web",
+    proj_1_desc: "Une plateforme de location de voitures conçue pour les touristes visitant le Rwanda, avec une réservation facile et un support local.",
+    proj_2_desc: "Une plateforme d'autonomisation des jeunes pour connecter les jeunes Rwandais aux opportunités, événements, mentorat et initiatives communautaires.",
+    services_tag: "Ce que j'offre", services_title: "Mes <span class='gradient-text'>Services</span>",
+    serv_web_title: "Développement Web", serv_web_desc: "Création de sites web et d'applications web modernes, réactifs et conviviaux.",
+    serv_web_feat1: "Pages d'atterrissage & Portfolios", serv_web_feat2: "Apps Web Full-Stack", serv_web_feat3: "Solutions Business Personnalisées", serv_web_feat4: "Optimisation des Performances",
+    serv_ui_title: "Design UI/UX", serv_ui_desc: "Création d'interfaces utilisateur propres, modernes et intuitives avec Figma.",
+    serv_ui_feat1: "Wireframing & Prototypage", serv_ui_feat2: "Design UI Moderne", serv_ui_feat3: "Design Réactif", serv_ui_feat4: "Tests Utilisateurs",
+    serv_mob_title: "Apps Mobiles", serv_mob_desc: "Applications web réactives qui fonctionnent parfaitement sur les mobiles.",
+    serv_mob_feat1: "Apps Web Progressives (PWA)", serv_mob_feat2: "Design Mobile-First", serv_mob_feat3: "Compatibilité Multi-appareils",
+    contact_tag: "Contactez-moi", contact_title: "Entrer en <span class='gradient-text'>Contact</span>", contact_sub: "Construisons quelque chose\n de génial ensemble.",
+    contact_p: "Que vous ayez un projet en tête, besoin d'un site web, ou juste envie de discuter — je suis toujours heureux d'échanger.",
+    form_name: "Votre Nom", form_email: "Adresse Email", form_service: "Service Requis", form_subject: "Sujet", form_message: "Message",
+    form_ph_name: "nom d'utilisateur", form_ph_email: "nom@exemple.com", form_ph_subject: "Demande de projet", form_ph_message: "Parlez-moi de votre projet...",
+    form_select_default: "Sélectionnez un service...", form_opt_web: "Développement Web", form_opt_ui: "Design UI/UX", form_opt_full: "Site Complet", form_opt_other: "Autre",
+    form_btn: "Envoyer le message", form_success: "✅ Message envoyé ! Je vous répondrai bientôt.",
+    footer_copy: "© 2026 Sena Mike. Construit avec ❤️ à Kigali, Rwanda",
+    typed: ["Développeur Full-Stack", "Designer UI/UX", "Étudiant en Logiciel", "Développeur Web"]
+  },
+  rw: {
+    nav_home: "Ahabanza", nav_about: "Abo ndi bo", nav_skills: "Ubuhanga", nav_projects: "Imyaka", nav_services: "Serivisi", nav_contact: "Twandikire",
+    btn_talk: "Tuvugishe",
+    hero_status: "Ngiye gukorana", hero_greeting: "Muraho, ndi", hero_role: "Mukoraporogaramu",
+    hero_intro: "Nkora ibikorwa by'ikoranabuhanga kandi bihenze neza binyuze mu kwandika code neza nubushishozi. Nifite umutima wo gukorana porogaramu ziba zifasha abaturage kandi zigira akamaro kuri Rwanda n'isi yose.",
+    btn_hire: "Ntwange akazi", btn_cv: "Shyiramo CV", btn_cv_short: "Shyiramo CV",
+    stat_projects: "Imyaka Nakoze", stat_exp: "Umwaka", stat_availability: "Ngiye gukorana", stat_freelance: "Akazi Bwa gatandatu",
+    about_tag: "Mfite imyirondoro", about_title: "Abo <span class='gradient-text'>Ndi bo</span>",
+    about_p1: "Ndi umunyeshuri ufite umutima wo gukorera porogaramu ukaba ari mumujyi wa Kigali, mu Rwanda.两手 kuri SOS Technical High School, ndifata neza gukora ibikorwa bya mudasobwa byo gufasha abantu.",
+    about_p2: "Muri igihe ntabwo ndi mu gukora code, ndeka gutanga umusanzu mu bikorwa by'abaturage, kugira ngo nzeyo ikoranabuhiga rishya, no kugenzura ibikorwa byikoranabuhanga byiyongera umusaruro mu Rwanda.",
+    info_name_label: "Amazina", info_location_label: "Aho mbarizwa", info_location: "KIGALI, RWANDA",
+    info_email_label: "Imeli", info_phone_label: "Telefoni", info_freelance_label: "Freelance", info_freelance: "Ngiye gukorana ✓",
+    info_langs_label: "Indimi", info_langs: "Icyongereza, Ikinyarwanda",
+    card_edu_title: "Amasomo", card_edu_desc: "Gukora Porogaramu — SOS Technical High School", card_edu_sub: "Mbese nanjye",
+    card_exp_title: "Ubunararibonye", card_exp_desc: "Mukoraporogaramu wa freelance n'amasomo y'abanyeshuri", card_exp_sub: "Gukora porogaramu z'akazi mu Rwanda",
+    card_goal_title: "Intego", card_goal_desc: "Kuba mukoraporogaramu w'inzobere mu kubaka ikoranabuhanga rihanga kuri Rwanda no muri Afurika.", card_goal_sub: "Wige kugira ngo nkore akazi cyangwa nse imyaka",
+    card_proj_title: "Imyaka", card_proj_desc: "Tembera Rwanda Rent Car • Connect Youth Rwanda", card_proj_sub: "Gukora ibikoresho byifasha abaturage bo mu Rwanda",
+    skills_tag: "Byo ndizi", skills_title: "Ubuhanga <span class='gradient-text'>Bwa ikoranabuhanga</span>", skill_front: "Frontend", skill_back: "Backend", skill_tools: "Ibikoresho",
+    projects_tag: "Ibyo nakoze", projects_title: "Imyaka <span class='gradient-text'>Y'agatangaza</span>", btn_demo: "Reba", btn_src: "Code y'ibanze", proj_cat_web: "Porogaramu ya Web",
+    proj_1_desc: "Ikoranabuhanga ryo guha abashyitsi mu Rwanda mashini ya guhembera, rihindura urugendo rwawe.",
+    proj_2_desc: "Ikoranabuhunga ryo guhuza abana bato mu Rwanda n'imbuto z'akazi, ibirori, ubujyanama, n'ingaruri z'abaturage.",
+    services_tag: "Byo nshyigikira", services_title: "Serivisi <span class='gradient-text'>Zanjye</span>",
+    serv_web_title: "Gukora Web", serv_web_desc: "Gukora websites na porogaramu za webu zahindutse, zishobora gukozwa na buri wese.",
+    serv_web_feat1: "Ipaji z'Ahabanza & Portfolios", serv_web_feat2: "Porogaramu za Web zose", serv_web_feat3: "Ibikorwa by'ubucuruzi", serv_web_feat4: "Kuvugurura imikorere",
+    serv_ui_title: "UI/UX Design", serv_ui_desc: "Gushushanya imbuga zikoresha zigezweho kandi zifatika neza.",
+    serv_ui_feat1: "Gushushanya ibimenyetso", serv_ui_feat2: "Design zigezweho", serv_ui_feat3: "Design zifata telephone", serv_ui_feat4: "Guvura abakoresha",
+    serv_mob_title: "Amafungaguro", serv_mob_desc: "Porogaramu za webu zikora neza ku mudasobwa.",
+    serv_mob_feat1: "Web App (PWA)", serv_mob_feat2: "Design bwo kuza kuri telefone ya mbere", serv_mob_feat3: "Gukora ku mashini zose",
+    contact_tag: "Twandikire", contact_title: "Twandikire <span class='gradient-text'>Ubutumwa</span>", contact_sub: "Twakore ibintu\nbyiza hamwe.",
+    contact_p: "Waba ufite umushinga, ugiye kwishyira website, cyangwa se ushaka guhura nanjye — mfatanya neza kuvugana.",
+    form_name: "Amazina yawe", form_email: "Aderesi ya Imeli", form_service: "Serivisi ukeneye", form_subject: "Intego", form_message: "Ubutumwa",
+    form_ph_name: "izina ryawe", form_ph_email: "izina@urugero.com", form_ph_subject: "Ubuhamiya bw'akazi", form_ph_message: "Vuga ibyerekeye umushinga wawe...",
+    form_select_default: "Hitamo serivisi...", form_opt_web: "Gukora Web", form_opt_ui: "UI/UX Design", form_opt_full: "Website yose", form_opt_other: "Ikindi",
+    form_btn: "Ohereza ubutumwa", form_success: "✅ Ubutumwa bwoherejwe! Nzagusubira cyane.",
+    footer_copy: "© 2026 Sena Mike. Yubakiwe na ❤️ i Kigali, Rwanda",
+    typed: ["Mukoraporogaramu w'ingenzi", "Designer UI/UX", "Nyiye muri Software", "Mukora Web"]
+  }
+};
+
+/* ============================================================
+   LANGUAGE LOGIC
+   ============================================================ */
+let currentLang = localStorage.getItem('lang') || 'en';
+const langBtn = document.getElementById('langBtn');
+const langDropdown = document.getElementById('langDropdown');
+
+// Update page content based on language
+function setLanguage(lang) {
+  currentLang = lang;
+  localStorage.setItem('lang', lang);
+  langBtn.textContent = lang.toUpperCase();
+  
+  // Update dropdown active state
+  document.querySelectorAll('.lang-option').forEach(opt => opt.classList.remove('active'));
+  document.querySelector(`.lang-option[onclick="setLanguage('${lang}')"]`).classList.add('active');
+
+  // Update all text elements with data-i18n
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (translations[lang][key]) {
+      // Check for HTML content (like gradient spans)
+      if (translations[lang][key].includes('<span')) {
+        el.innerHTML = translations[lang][key];
+      } else {
+        el.textContent = translations[lang][key];
+      }
+    }
+  });
+
+  // Update placeholders
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    const key = el.getAttribute('data-i18n-placeholder');
+    if (translations[lang][key]) {
+      el.placeholder = translations[lang][key];
+    }
+  });
+
+  // Update typed effect phrases and restart
+  resetTypedEffect();
+  
+  // Close dropdown
+  langDropdown.classList.remove('show');
+}
+
+// Toggle dropdown
+langBtn.addEventListener('click', (e) => {
+  e.stopPropagation();
+  langDropdown.classList.toggle('show');
+});
+
+// Close dropdown when clicking outside
+window.addEventListener('click', () => {
+  langDropdown.classList.remove('show');
+});
+
+// Initialize language on load
+setLanguage(currentLang);
+
+
 /* ============================================================
    THEME TOGGLE LOGIC
    ============================================================ */
@@ -1603,14 +1842,20 @@ themeToggle.addEventListener('click', () => {
 /* ============================================================
    TYPED ANIMATION
    ============================================================ */
-const phrases = [
-  "Full-Stack Developer",
-  "UI/UX Designer",
-  "Software Student",
-  "Web Developer"
-];
+let phrases = translations[currentLang].typed;
 let phraseIndex = 0, charIndex = 0, isDeleting = false;
 const typedEl = document.getElementById('typed');
+let typingTimeout;
+
+function resetTypedEffect() {
+  clearTimeout(typingTimeout);
+  phrases = translations[currentLang].typed;
+  phraseIndex = 0;
+  charIndex = 0;
+  isDeleting = false;
+  typedEl.textContent = "";
+  typeLoop();
+}
 
 function typeLoop() {
   const current = phrases[phraseIndex];
@@ -1630,9 +1875,9 @@ function typeLoop() {
     phraseIndex = (phraseIndex + 1) % phrases.length;
     delay = 300;
   }
-  setTimeout(typeLoop, delay);
+  typingTimeout = setTimeout(typeLoop, delay);
 }
-typeLoop();
+resetTypedEffect();
 
 /* ============================================================
    NAVBAR SCROLL BEHAVIOR
@@ -1714,7 +1959,7 @@ document.getElementById('contactForm').addEventListener('submit', function(e) {
   e.preventDefault();
   const form = this;
   const btn = form.querySelector('button[type="submit"]');
-  btn.textContent = 'Sending...';
+  btn.textContent = translations[currentLang].form_btn + '...';
   btn.disabled = true;
   setTimeout(() => {
     form.style.display = 'none';
