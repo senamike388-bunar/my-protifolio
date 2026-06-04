@@ -8,31 +8,56 @@
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 /* ============================================================
-   CSS CUSTOM PROPERTIES & RESET
+   CSS CUSTOM PROPERTIES (THEMING)
    ============================================================ */
 :root {
+  /* DARK MODE (DEFAULT) */
   --bg-primary: #080c14;
   --bg-secondary: #0d1422;
   --bg-card: #111827;
   --bg-glass: rgba(255,255,255,0.04);
   --border-glass: rgba(255,255,255,0.08);
+  
   --accent: #00d4ff;
   --accent-2: #7c3aed;
   --accent-3: #f59e0b;
+  
   --text-primary: #f1f5f9;
   --text-secondary: #94a3b8;
   --text-muted: #475569;
+  
   --gradient-hero: linear-gradient(135deg, #00d4ff 0%, #7c3aed 50%, #f59e0b 100%);
   --gradient-card: linear-gradient(135deg, rgba(0,212,255,0.1) 0%, rgba(124,58,237,0.1) 100%);
+  
   --shadow-glow: 0 0 40px rgba(0,212,255,0.15);
   --shadow-card: 0 25px 60px rgba(0,0,0,0.5);
+  
   --radius-lg: 20px;
   --radius-md: 12px;
   --radius-sm: 8px;
   --transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  
   --font-display: 'Syne', sans-serif;
   --font-body: 'DM Sans', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
+}
+
+/* LIGHT MODE OVERRIDES */
+body.light-mode {
+  --bg-primary: #f8fafc; /* Slate 50 */
+  --bg-secondary: #ffffff;
+  --bg-card: #ffffff;
+  --bg-glass: rgba(255,255,255,0.6);
+  --border-glass: rgba(0,0,0,0.08);
+  
+  --text-primary: #0f172a; /* Slate 900 */
+  --text-secondary: #475569; /* Slate 600 */
+  --text-muted: #94a3b8;
+  
+  --gradient-card: linear-gradient(135deg, rgba(0,212,255,0.05) 0%, rgba(124,58,237,0.05) 100%);
+  
+  --shadow-glow: 0 0 30px rgba(0,212,255,0.1);
+  --shadow-card: 0 10px 40px rgba(0,0,0,0.05);
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -45,6 +70,7 @@ body {
   color: var(--text-primary);
   overflow-x: hidden;
   line-height: 1.6;
+  transition: background-color 0.4s ease, color 0.4s ease;
 }
 
 /* ============================================================
@@ -118,7 +144,7 @@ body::before {
 }
 .btn-primary {
   background: var(--accent);
-  color: var(--bg-primary);
+  color: #080c14; /* Always dark text on bright accent */
   box-shadow: 0 8px 30px rgba(0,212,255,0.3);
 }
 .btn-primary:hover {
@@ -145,16 +171,15 @@ body::before {
   transform: translateY(30px);
   transition: opacity 0.7s ease, transform 0.7s ease;
 }
-.reveal.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
 .reveal-left {
   opacity: 0;
   transform: translateX(-40px);
   transition: opacity 0.7s ease, transform 0.7s ease;
 }
 .reveal-left.visible { opacity: 1; transform: translateX(0); }
+
 .reveal-right {
   opacity: 0;
   transform: translateX(40px);
@@ -179,6 +204,12 @@ body::before {
   border-bottom: 1px solid var(--border-glass);
   padding: 0.9rem 0;
 }
+/* Light mode navbar override */
+body.light-mode #navbar.scrolled {
+  background: rgba(255,255,255,0.85);
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
 .nav-inner {
   display: flex;
   align-items: center;
@@ -212,6 +243,47 @@ body::before {
 }
 .nav-cta { display: flex; align-items: center; gap: 1rem; }
 .nav-cta .btn { padding: 10px 22px; font-size: 0.85rem; }
+
+/* THEME TOGGLE (Grid Icon) */
+.theme-toggle {
+  background: #080c14;
+  border: 1px solid var(--border-glass);
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+.theme-toggle:hover {
+  border-color: var(--accent);
+  transform: scale(1.05);
+}
+/* Grid Icon Implementation */
+.grid-icon {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 2px;
+  width: 16px;
+  height: 12px;
+}
+.grid-cell {
+  background-color: rgba(255,255,255,0.5);
+  border-radius: 1px;
+}
+/* Light mode toggle state */
+body.light-mode .theme-toggle {
+  background: #f8fafc;
+  border-color: rgba(0,0,0,0.1);
+}
+body.light-mode .grid-cell {
+  background-color: rgba(0,0,0,0.6);
+}
 
 /* Hamburger */
 .hamburger {
@@ -248,6 +320,8 @@ body::before {
   justify-content: center;
   gap: 2rem;
 }
+body.light-mode .nav-mobile { background: rgba(255,255,255,0.97); }
+
 .nav-mobile.open { display: flex; }
 .nav-mobile a {
   font-family: var(--font-display);
@@ -301,6 +375,10 @@ body::before {
   bottom: -50px; left: -100px;
   animation: floatOrb 10s ease-in-out infinite reverse;
 }
+/* Light mode orbs */
+body.light-mode .orb-1 { background: rgba(0,212,255,0.15); }
+body.light-mode .orb-2 { background: rgba(124,58,237,0.15); }
+
 @keyframes floatOrb {
   0%, 100% { transform: translate(0, 0); }
   50% { transform: translate(30px, -30px); }
@@ -519,7 +597,6 @@ body::before {
   gap: 1rem;
   margin-bottom: 2rem;
 }
-.info-item {}
 .info-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 2px; }
 .info-value { font-size: 0.9rem; color: var(--text-primary); font-weight: 500; }
 .info-value a { color: var(--accent); text-decoration: none; }
@@ -575,6 +652,8 @@ body::before {
   border-radius: 3px;
   overflow: hidden;
 }
+body.light-mode .skill-bar { background: rgba(0,0,0,0.06); }
+
 .skill-fill {
   height: 100%;
   border-radius: 3px;
@@ -813,88 +892,6 @@ body::before {
 }
 
 /* ============================================================
-   STATS SECTION
-   ============================================================ */
-#stats {
-  background: var(--bg-secondary);
-  padding: 80px 0;
-}
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 2rem;
-}
-.stat-card {
-  text-align: center;
-  padding: 2.5rem 1.5rem;
-  background: var(--bg-card);
-  border: 1px solid var(--border-glass);
-  border-radius: var(--radius-lg);
-  transition: var(--transition);
-}
-.stat-card:hover {
-  border-color: rgba(0,212,255,0.2);
-  transform: translateY(-4px);
-}
-.stat-num {
-  font-family: var(--font-display);
-  font-size: 3rem;
-  font-weight: 800;
-  color: var(--text-primary);
-  display: block;
-  line-height: 1;
-  margin-bottom: 0.5rem;
-}
-.stat-num .count { color: var(--accent); }
-.stat-label {
-  font-size: 0.85rem;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-}
-
-/* ============================================================
-   TESTIMONIALS SECTION
-   ============================================================ */
-.testimonials-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 2rem;
-}
-.testimonial-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border-glass);
-  border-radius: var(--radius-lg);
-  padding: 2rem;
-  transition: var(--transition);
-  position: relative;
-}
-.testimonial-card:hover {
-  border-color: rgba(0,212,255,0.2);
-  transform: translateY(-4px);
-}
-.testimonial-quote {
-  font-size: 3rem;
-  color: var(--accent);
-  opacity: 0.3;
-  line-height: 1;
-  margin-bottom: 0.5rem;
-  font-family: Georgia, serif;
-}
-.testimonial-text { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.8; margin-bottom: 1.5rem; }
-.testimonial-stars { display: flex; gap: 3px; margin-bottom: 1.25rem; }
-.star { color: var(--accent-3); font-size: 0.9rem; }
-.testimonial-author { display: flex; align-items: center; gap: 12px; }
-.testimonial-avatar {
-  width: 44px; height: 44px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid var(--border-glass);
-}
-.author-name { font-weight: 600; font-size: 0.9rem; }
-.author-role { font-size: 0.78rem; color: var(--text-muted); }
-
-/* ============================================================
    CONTACT SECTION
    ============================================================ */
 #contact { background: var(--bg-secondary); }
@@ -1074,6 +1071,9 @@ footer {
   .form-row { grid-template-columns: 1fr; }
   .stats-grid { grid-template-columns: repeat(2, 1fr); }
   .footer-inner { flex-direction: column; text-align: center; }
+  
+  /* Show theme toggle in mobile menu if needed, or keep separate. 
+     For now, we'll hide desktop controls completely. */
 }
 @media (max-width: 480px) {
   .container { padding: 0 1.25rem; }
@@ -1099,9 +1099,20 @@ footer {
       <li><a href="#services">Services</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
+    
+    <!-- Controls -->
     <div class="nav-cta">
+      <!-- GRID THEME TOGGLE -->
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle Light/Dark Mode">
+        <div class="grid-icon">
+          <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
+          <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
+          <div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div>
+        </div>
+      </button>
       <a href="#contact" class="btn btn-primary">Let's Talk</a>
     </div>
+
     <div class="hamburger" id="hamburger">
       <span></span><span></span><span></span>
     </div>
@@ -1131,7 +1142,7 @@ footer {
       <div class="hero-photo-panel reveal-left">
         <div class="photo-card">
           <div class="photo-card-inner">
-            <img src="Screenshot 2025-10-01 150536.jpg" alt="SENA MIKE" />
+            <img src="https://picsum.photos/seed/senamike/400/500" alt="SENA MIKE" />
           </div>
           <div class="photo-card-badge">
             <div class="status-dot"></div>
@@ -1363,18 +1374,31 @@ footer {
       <!-- Project 1 -->
       <div class="project-card reveal" data-category="web">
         <div class="project-img-wrap">
-          <img src="Screenshot 2026-06-03 084516.png" alt="Tembera Rwanda" class="project-img">
+          <img src="https://picsum.photos/seed/tembera/600/400" alt="Tembera Rwanda" class="project-img">
           <div class="project-overlay">
             <a href="#" class="overlay-btn">Live Demo</a>
             <a href="#" class="overlay-btn outline">GitHub</a>
           </div>
         </div>
-
+        <div class="project-body">
+          <div class="project-cat">Web App</div>
+          <h3 class="project-title">Tembera Rwanda</h3>
+          <p class="project-desc">A car rental platform designed for tourists visiting Rwanda, featuring easy booking and local support.</p>
+          <div class="project-tech">
+            <span class="tech-tag">React</span>
+            <span class="tech-tag">Node.js</span>
+            <span class="tech-tag">MongoDB</span>
+          </div>
+          <div class="project-links">
+            <a href="#" class="link-demo">Live Demo</a>
+            <a href="#" class="link-src">Source Code</a>
+          </div>
+        </div>
       </div>
       <!-- Project 2 -->
       <div class="project-card reveal" data-category="web">
         <div class="project-img-wrap">
-          <img src="https://picsum.photos/id/106/600/400" alt="Connect Youth" class="project-img">
+          <img src="https://picsum.photos/seed/youth/600/400" alt="Connect Youth" class="project-img">
           <div class="project-overlay">
             <a href="#" class="overlay-btn">Live Demo</a>
             <a href="#" class="overlay-btn outline">GitHub</a>
@@ -1492,11 +1516,11 @@ footer {
           <div class="form-row">
             <div class="form-group">
               <label for="name">Your Name</label>
-              <input type="text" id="name" placeholder="John Doe" required>
+              <input type="text" id="name" placeholder="username" required>
             </div>
             <div class="form-group">
               <label for="email">Email Address</label>
-              <input type="email" id="email" placeholder="john@example.com" required>
+              <input type="email" id="email" placeholder="name@example.com" required>
             </div>
           </div>
           <div class="form-group">
@@ -1537,7 +1561,7 @@ footer {
   <div class="container">
     <div class="footer-inner">
       <a href="#home" class="footer-logo">SENA MIKE<span>.</span></a>
-      <p class="footer-copy">© 2026 Sena Mike. Built with  in Kigali, Rwanda</p>
+      <p class="footer-copy">© 2026 Sena Mike. Built with ❤️ in Kigali, Rwanda</p>
       <div class="footer-socials">
         <a href="https://instagram.com/senamike388" target="_blank" class="social-link">📷</a>
       </div>
@@ -1554,6 +1578,28 @@ footer {
      JAVASCRIPT
      ============================================================ -->
 <script>
+/* ============================================================
+   THEME TOGGLE LOGIC
+   ============================================================ */
+const themeToggle = document.getElementById('themeToggle');
+const body = document.body;
+
+// Check local storage or system preference
+const savedTheme = localStorage.getItem('theme');
+const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+if (savedTheme === 'light') {
+  body.classList.add('light-mode');
+} else if (!savedTheme && !systemPrefersDark) {
+  body.classList.add('light-mode');
+}
+
+themeToggle.addEventListener('click', () => {
+  body.classList.toggle('light-mode');
+  const isLight = body.classList.contains('light-mode');
+  localStorage.setItem('theme', isLight ? 'light' : 'dark');
+});
+
 /* ============================================================
    TYPED ANIMATION
    ============================================================ */
